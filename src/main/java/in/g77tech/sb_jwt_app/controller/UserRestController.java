@@ -8,10 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import in.g77tech.sb_jwt_app.binding.AuthRequest;
 import in.g77tech.sb_jwt_app.entity.UserEntity;
@@ -35,11 +32,13 @@ public class UserRestController {
     private JwtService jwt;
 
     // register user
-    public String registerUser(UserEntity user){
-        boolean saveUser = service.saveUser(user);
+    @PostMapping("/register")
+    public String registerUser(@RequestBody UserEntity user){
+
         String encodedPwd = encoder.encode(user.getUpwd());
         user.setUpwd(encodedPwd);
 
+        boolean saveUser = service.saveUser(user);
         if (saveUser) {
             return "User Registered Success";
         }
@@ -51,7 +50,7 @@ public class UserRestController {
 
     // login user
     @PostMapping("/login")
-    public String loginUser(AuthRequest request){
+    public String loginUser(@RequestBody AuthRequest request){
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(request.getUname(), request.getPwd());
 
         try{
