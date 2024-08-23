@@ -20,7 +20,7 @@ import in.g77tech.sb_jwt_app.services.MyUserDetailsService;
 
 @RestController
 @RequestMapping("/api")
-public class UserRestController {4
+public class UserRestController {
 
     @Autowired
     private MyUserDetailsService service;
@@ -62,7 +62,7 @@ public class UserRestController {4
                 String jwtToken = jwt.generateToken(request.getUname());
                 return "User Logged In: "+jwtToken;
             }
-        }catch (AuthenticationException e){
+        }catch (Exception e){
             e.printStackTrace();
             return "Invalid Credentials";
         }
